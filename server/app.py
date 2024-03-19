@@ -33,19 +33,30 @@ def pet_by_id(id):
 
 @app.route('/species/<string:species>')
 def pet_by_species(species):
-    pets = Pet.query.filter_by(species = species)
-    if pets:
-        all_pets = []
-        for pet in pets:
-            all_pets.append(pet.to_dict())
-        body = {'count':len(all_pets),
-                'pets': all_pets
-                }
-        status = 200
-    else:
-        body =  {'message': f'Pet {species} not found.'}
-        status = 404
-    return make_response(body,status)
+    pets = []  # array to store a dictionary for each pet
+    for pet in Pet.query.filter_by(species=species).all():
+        pets.append(pet.to_dict())
+    body = {'count': len(pets),
+            'pets': pets
+            }
+    return make_response(body, 200)
+
+
+# @app.route('/species/<string:species>')
+# def pet_by_species(species):
+#     pets = Pet.query.filter_by(species = species)
+#     if pets:
+#         all_pets = []
+#         for pet in pets:
+#             all_pets.append(pet.to_dict())
+#         body = {'count':len(all_pets),
+#                 'pets': all_pets
+#                 }
+#         status = 200
+#     else:
+#         body =  {'message': f'Pet {species} not found.'}
+#         status = 404
+#     return make_response(body,status)
     
 
 
